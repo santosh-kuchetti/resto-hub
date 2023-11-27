@@ -4,14 +4,16 @@ import { SafeAreaView } from "react-native";
 import { StatusBar } from "react-native";
 import Details from "./Details";
 import Offers from "./Offers";
+import Recommended from "./Recommended";
 
-const Home = () => {
+const Home = ({navigation}) => {
 	return (
-		<SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
-			<Details />
-			<Offers />
-		</SafeAreaView>
-	);
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+      <Details navigation={navigation} />
+      <Offers navigation={navigation} />
+      <Recommended navigation={navigation} />
+    </SafeAreaView>
+  );
 };
 
 export default Home;
