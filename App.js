@@ -1,7 +1,9 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { LogBox, StyleSheet, Text, View } from "react-native";
 import Bottombar from "./screens/Bottombar";
 import { useFonts } from "expo-font";
+
+LogBox.ignoreAllLogs();
 
 export default function App() {
 	const [loaded] = useFonts({
@@ -18,7 +20,7 @@ export default function App() {
   }
 	return (
 		<View style={styles.container}>
-			<StatusBar translucent={true} />
+			<StatusBar translucent={true} backgroundColor="transparent"/>
 			<Bottombar />
 		</View>
 	);

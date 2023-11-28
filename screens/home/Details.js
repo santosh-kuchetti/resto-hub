@@ -1,9 +1,96 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useCallback, useState } from "react";
 import { Fonts } from "../../constants/Styles";
 import { Image } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Cart from "./Cart";
 
-const Details = () => {
+const Details = ({ navigation }) => {
+
+	function header() {
+		const [count, setCount] = useState(0);
+		const [Cartdata, setCartData] = useState([]);
+		useFocusEffect(
+			useCallback(() => {
+				const retrieveCartData = async () => {
+					try {
+						const value = await AsyncStorage.getItem("cartData");
+						if (value !== null) {
+							let tempcartData = JSON.parse(value);
+
+							if (tempcartData.length) {
+								let totalCount = tempcartData.reduce(
+									(acc, item) => acc + item.count,
+									0
+								);
+								setCount(totalCount);
+								setCartData(tempcartData);
+							} else {
+								setCount(0);
+								setCartData([]);
+							}
+						} else {
+							setCount(0);
+							setCartData([]);
+							console.log("Value does not exist in AsyncStorage.");
+						}
+					} catch (error) {
+						console.error("Error retrieving data:", error);
+					}
+				};
+				retrieveCartData();
+			}, [])
+		);
+		return (
+			<View style={styles.header}>
+				<Text style={{ ...Fonts.Heading1 }}>Hey, Rahul</Text>
+				<Cart navigation={navigation} />
+			</View>
+		);
+	}
+
+	function search() {
+		return (
+			<View style={styles.searchContainer}>
+				<View style={styles.innerContainer}>
+					<Image
+						source={require("../../assets/images/search.png")}
+						style={styles.searchIcon}
+					/>
+					<Text style={{ ...Fonts.HeadingLight }}>
+						Search Products or store
+					</Text>
+				</View>
+			</View>
+		);
+	}
+
+	function DelivaryDetails() {
+		return (
+			<>
+				<View style={styles.deliveryheader}>
+					<Text style={{ ...Fonts.HeadingMediumGray }}>DELIVERY TO</Text>
+					<Text style={{ ...Fonts.HeadingMediumGray }}>WITHIN</Text>
+				</View>
+				<View style={styles.deliveryheader}>
+					<View style={{ flexDirection: "row", alignItems: "center" }}>
+						<Text style={{ ...Fonts.HeadingMedium, marginRight: 10 }}>
+							Green Way 3000, Sylhet
+						</Text>
+						<Image source={require("../../assets/images/arrowIocn.png")} />
+					</View>
+					<View style={{ flexDirection: "row", alignItems: "center" }}>
+						<Text style={{ ...Fonts.HeadingMedium, marginRight: 10 }}>
+							1 Hour
+						</Text>
+						<Image source={require("../../assets/images/arrowIocn.png")} />
+					</View>
+				</View>
+			</>
+		);
+	}
+
 	return (
 		<View style={styles.detailsWrapper}>
 			{header()}
@@ -13,62 +100,6 @@ const Details = () => {
 	);
 };
 
-function header() {
-	return (
-		<View style={styles.header}>
-			<Text style={{ ...Fonts.Heading1 }}>Hey, Rahul</Text>
-			<View style={styles.container}>
-				<Image
-					source={require("../../assets/images/bag.png")}
-					style={styles.image}
-				/>
-				<View style={styles.overlay}>
-					<View style={styles.cart}>
-						<Image source={require("../../assets/images/Ellipse.png")} />
-						<Text style={styles.numberText}>3</Text>
-					</View>
-				</View>
-			</View>
-		</View>
-	);
-}
-
-function search() {
-	return (
-		<View style={styles.searchContainer}>
-			<View style={styles.innerContainer}>
-				<Image
-					source={require("../../assets/images/search.png")}
-					style={styles.searchIcon}
-				/>
-				<Text style={{ ...Fonts.HeadingLight }}>Search Products or store</Text>
-			</View>
-		</View>
-	);
-}
-
-function DelivaryDetails() {
-	return (
-		<>
-			<View style={styles.deliveryheader}>
-				<Text style={{ ...Fonts.HeadingMediumGray }}>DELIVERY TO</Text>
-				<Text style={{ ...Fonts.HeadingMediumGray }}>WITHIN</Text>
-			</View>
-			<View style={styles.deliveryheader}>
-				<View style={{ flexDirection: "row", alignItems: "center" }}>
-					<Text style={{ ...Fonts.HeadingMedium, marginRight: 10 }}>
-						Green Way 3000, Sylhet
-					</Text>
-					<Image source={require("../../assets/images/arrowIocn.png")} />
-				</View>
-				<View style={{ flexDirection: "row", alignItems: "center" }}>
-					<Text style={{ ...Fonts.HeadingMedium, marginRight: 10 }}>1 Hour</Text>
-					<Image source={require("../../assets/images/arrowIocn.png")} />
-				</View>
-			</View>
-		</>
-	);
-}
 export default Details;
 
 const styles = StyleSheet.create({
@@ -88,8 +119,8 @@ const styles = StyleSheet.create({
 	},
 	overlay: {
 		position: "absolute",
-		right: -13,
-		top: -10,
+		right: -18,
+		top: -15,
 	},
 	cart: {
 		flex: 1,
@@ -100,7 +131,7 @@ const styles = StyleSheet.create({
 		color: "white",
 		fontSize: 16,
 		fontWeight: "bold",
-		top: -24,
+		top: -26,
 	},
 	searchContainer: {
 		height: 56,
@@ -117,9 +148,9 @@ const styles = StyleSheet.create({
 		marginLeft: 28,
 	},
 	searchIcon: {
-		width: 24, // Adjust the width as needed
-		height: 24, // Adjust the height as needed
-		marginRight: 12, // Adjust the margin as needed
+		width: 24,
+		height: 24,
+		marginRight: 12,
 	},
 	deliveryheader: {
 		top: 55,

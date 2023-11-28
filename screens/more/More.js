@@ -1,12 +1,13 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import { Fonts } from "../../constants/Styles";
 
 const More = () => {
   return (
-    <View>
-      <Text>More</Text>
-    </View>
-  )
+		<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+			<Text style={{ ...Fonts.empty }}>More</Text>
+		</View>
+	);
 }
 
 export default More

@@ -22,7 +22,6 @@ const Offers = () => {
 
   const renderItem = ({ item }) => {
     return (
-      // <View style={{flex:1, justifyContent: "center", alignItems: "center" }}>
       <View style={{ backgroundColor: item.color, ...styles.banner }}>
         <Image source={item.bannerImage} style={{ tintColor: "#fff" }} />
         <View style={{}}>
@@ -31,7 +30,6 @@ const Offers = () => {
           <Text style={{ ...Fonts.bannerLight }}>On first 03 order</Text>
         </View>
       </View>
-      // </View>
     );
   };
   return (

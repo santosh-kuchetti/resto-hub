@@ -22,6 +22,7 @@ import {
   TransitionPresets,
 } from "@react-navigation/stack";
 import ItemDetails from "./itemDetails/ItemDetails";
+import CartItems from "./cartItems/CartItems";
 const Tab = createBottomTabNavigator();
 
 const Stack = createStackNavigator();
@@ -31,7 +32,6 @@ const HomeScreen = () => {
     <Tab.Navigator
       initialRouteName="Home"
       screenOptions={({ route }) => ({
-        // tabBarShowLabel: false,
         tabBarLabel: ({ focused }) =>
           focused ? null : <Text>{route.name}</Text>,
         headerShown: false,
@@ -103,7 +103,7 @@ const Bottombar = (props) => {
       >
         <Stack.Screen name="HomeScreen" component={HomeScreen} />
         <Stack.Screen name="ItemDetails" component={ItemDetails} />
-        {/* Add other screens as needed */}
+        <Stack.Screen name="Cart" component={CartItems}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
