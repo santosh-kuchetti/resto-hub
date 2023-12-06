@@ -7,13 +7,15 @@ import {
 	TouchableOpacity,
 	View,
 } from "react-native";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Fonts } from "../../constants/Styles";
 import { useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { debouncedFetchData, fetchData } from "../../utils/gettingData";
+import debounce from "lodash/debounce";
 
-const Recommended = ({ navigation }) => {
+const Recommended = ({ navigation, searchValue, from }) => {
 	const [productsData, setProductsData] = useState([]);
 	const [favorites, setFavorites] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -22,8 +24,26 @@ const Recommended = ({ navigation }) => {
 		useCallback(() => {
 			const fetchProducts = async () => {
 				try {
-					const products = await axios.get("https://dummyjson.com/products");
-					setProductsData(products?.data?.products || []);
+					let products;
+					if (from == "search") {
+						products = await debouncedFetchData();
+					} else {
+						products = await fetchData();
+					}
+					if (from == "search") {
+						if (searchValue == "") {
+							setProductsData([]);
+							return;
+						} else {
+							let data = products?.data?.products.filter((item) =>
+								item.title.toLowerCase().includes(searchValue.toLowerCase())
+							);
+							setProductsData(data || []);
+							return;
+						}
+					} else {
+						setProductsData(products?.data?.products || []);
+					}
 				} catch (error) {
 					console.error("Error fetching products:", error);
 				} finally {
@@ -42,7 +62,7 @@ const Recommended = ({ navigation }) => {
 				}
 			};
 			fetchFavorites();
-		}, [])
+		}, [from, searchValue])
 	);
 
 	const handleHeartClick = async (item) => {
@@ -110,6 +130,7 @@ const Recommended = ({ navigation }) => {
 			</View>
 		);
 	}
+
 	return (
 		<View
 			style={{
@@ -117,7 +138,9 @@ const Recommended = ({ navigation }) => {
 				marginTop: 20,
 				marginHorizontal: 20,
 			}}>
-			<Text style={{ ...Fonts.headingRecommand }}>Recommended</Text>
+			{from !== "search" && (
+				<Text style={{ ...Fonts.headingRecommand }}>Recommended</Text>
+			)}
 			<FlatList
 				data={productsData}
 				renderItem={renderItem}
@@ -172,7 +195,6 @@ const styles = StyleSheet.create({
 	},
 	loadingContainer: {
 		flex: 1,
-		// justifyContent: "center",
 		alignItems: "center",
 	},
 });

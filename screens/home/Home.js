@@ -17,12 +17,6 @@ const Home = ({ navigation }) => {
 						<Recommended navigation={navigation} />
 					</>
 				}
-				// contentContainerStyle={{
-				// 	paddingBottom: Sizes.fixPadding * 8.0,
-				// 	paddingTop:
-				// 		StatusBar.currentHeight +
-				// 		Sizes.fixPadding * (Platform.OS == "ios" ? 7.0 : 2.0),
-				// }}
 				showsVerticalScrollIndicator={false}
 			/>
 		</SafeAreaView>

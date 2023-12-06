@@ -1,13 +1,13 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TextInput } from "react-native";
 import React, { useCallback, useState } from "react";
 import { Fonts } from "../../constants/Styles";
 import { Image } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Cart from "./Cart";
+import { TouchableOpacity } from "react-native";
 
 const Details = ({ navigation }) => {
-
 	function header() {
 		const [count, setCount] = useState(0);
 		const [Cartdata, setCartData] = useState([]);
@@ -52,7 +52,9 @@ const Details = ({ navigation }) => {
 
 	function search() {
 		return (
-			<View style={styles.searchContainer}>
+			<TouchableOpacity
+				onPress={() => navigation.push("Search")}
+				style={styles.searchContainer}>
 				<View style={styles.innerContainer}>
 					<Image
 						source={require("../../assets/images/search.png")}
@@ -62,7 +64,18 @@ const Details = ({ navigation }) => {
 						Search Products or store
 					</Text>
 				</View>
-			</View>
+				{/* <View style={styles.innerContainer}>
+					<Image
+						source={require("../../assets/images/search.png")}
+						style={styles.searchIcon}
+					/>
+					<TextInput
+						style={styles.input}
+						placeholder="Search Products or store"
+						placeholderTextColor="#8891A5"
+					/>
+				</View> */}
+			</TouchableOpacity>
 		);
 	}
 
@@ -103,6 +116,10 @@ const Details = ({ navigation }) => {
 export default Details;
 
 const styles = StyleSheet.create({
+	input: {
+		flex: 1,
+		height: 40,
+	},
 	detailsWrapper: {
 		height: 252,
 		backgroundColor: "#2A4BA0",
@@ -146,6 +163,7 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "start",
 		marginLeft: 28,
+		...Fonts.HeadingLight,
 	},
 	searchIcon: {
 		width: 24,

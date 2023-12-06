@@ -23,6 +23,7 @@ import {
 } from "@react-navigation/stack";
 import ItemDetails from "./itemDetails/ItemDetails";
 import CartItems from "./cartItems/CartItems";
+import Search from "./search/Search";
 const Tab = createBottomTabNavigator();
 
 const Stack = createStackNavigator();
@@ -104,6 +105,7 @@ const Bottombar = (props) => {
         <Stack.Screen name="HomeScreen" component={HomeScreen} />
         <Stack.Screen name="ItemDetails" component={ItemDetails} />
         <Stack.Screen name="Cart" component={CartItems}/>
+        <Stack.Screen name="Search" component={Search}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
